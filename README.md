@@ -4,7 +4,8 @@ Local-League allows you to post a soccer game and everyone who is registered in 
 
 Link to live DEMO: (https://local-league-app.herokuapp.com/)
 
-<img src="https://d2ffutrenqvap3.cloudfront.net/items/3F1b3S2X0q0k2b3b3o2Y/Screen%20Recording%202018-04-05%20at%2001.00%20AM.gif?v=75c7b613">
+<img src="./client/public/img/Screenshot.gif" target="_blank">
+
 
 ## Technologies
 
@@ -28,11 +29,12 @@ Link to live DEMO: (https://local-league-app.herokuapp.com/)
 - Heroku
 - mLab
 
+<img src="./client/public/img/screenshot2.gif" target="_blank">
+
+
 ## Installing
 
 Clone from my Github to a local repository, then do `yarn install` or `npm install` for both the root directory and client directory. After that run `yarn start` to start the application.
-
-<img src="https://d2ffutrenqvap3.cloudfront.net/items/2K3y01190o180n1f2O0k/Screen%20Recording%202018-04-05%20at%2001.15%20AM.gif?v=63a211dc">
 
 
 ## Author
