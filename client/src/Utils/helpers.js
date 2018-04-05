@@ -166,7 +166,7 @@ export default {
       const region_name = response.data.location.region_name;
       axios
         .get(
-          `http://api.openweathermap.org/data/2.5/weather?q=${city},${region_name}&units=imperial&appid=b92bd67b1bf224690009c4ed1fc0e080`
+          `https://api.openweathermap.org/data/2.5/weather?q=${city},${region_name}&units=imperial&appid=b92bd67b1bf224690009c4ed1fc0e080`
         )
         .then(results => {
           // console.log(results)
