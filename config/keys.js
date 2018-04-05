@@ -1,1 +1,0 @@
-module.exports ="mongodb://eomar:Asdf1234@ds135399.mlab.com:35399/local-league"
