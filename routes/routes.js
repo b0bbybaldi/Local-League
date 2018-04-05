@@ -18,7 +18,7 @@ module.exports = (app, passport) => {
   // HOME PAGE (with login links) ========
   // =====================================
   app.get("/", (req, res) => {
-    res.render("http://localhost:3000/"); // load the index.ejs file
+    res.render("https://local-league-app.herokuapp.com/"); // load the index.ejs file
   });
 
   // =====================================
@@ -251,7 +251,7 @@ module.exports = (app, passport) => {
   // show the login form
   app.get("/login", (req, res) => {
     // render the page and pass in any flash data if it exists
-    res.render("http://localhost:3000/login", {
+    res.render("https://local-league-app.herokuapp.com/login", {
       message: req.flash("loginMessage")
     });
   });
@@ -260,8 +260,8 @@ module.exports = (app, passport) => {
   app.post(
     "/login",
     passport.authenticate("local-login", {
-      successRedirect: "http://localhost:3000/dashboard", // redirect to the secure profile section
-      failureRedirect: "http://localhost:3000/login", // redirect back to the signup page if there is an error
+      successRedirect: "https://local-league-app.herokuapp.com/dashboard", // redirect to the secure profile section
+      failureRedirect: "https://local-league-app.herokuapp.com/login", // redirect back to the signup page if there is an error
       failureFlash: true // allow flash messages
     })
   );
@@ -279,8 +279,8 @@ module.exports = (app, passport) => {
   app.post(
     "/signup",
     passport.authenticate("local-signup", {
-      successRedirect: "http://localhost:3000/dashboard", // redirect to the secure profile section
-      failureRedirect: "http://localhost:3000/signup", // redirect back to the signup page if there is an error
+      successRedirect: "https://local-league-app.herokuapp.com/dashboard", // redirect to the secure profile section
+      failureRedirect: "https://local-league-app.herokuapp.com/signup", // redirect back to the signup page if there is an error
       failureFlash: true // allow flash messages
     })
   );
@@ -291,7 +291,7 @@ module.exports = (app, passport) => {
   // we will want this protected so you have to be logged in to visit
   // we will use route middleware to verify this (the isLoggedIn function)
   app.get("/dashboard", isLoggedIn, (req, res) => {
-    res.render("http://localhost:3000/dashboard", {
+    res.render("https://local-league-app.herokuapp.com/dashboard", {
       user: req.user // get the user out of session and pass to template
     });
   });
@@ -303,7 +303,7 @@ module.exports = (app, passport) => {
     req.session.destroy(err => {
       req.logout();
       res.clearCookie("user_sid");
-      // res.render("http://localhost:3000/")
+      // res.render("https://local-league-app.herokuapp.com/")
       res.json(true);
     });
   });
@@ -315,5 +315,5 @@ const isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) return next();
 
   // if they aren't redirect them to the home page
-  res.redirect("http://localhost:3000/");
+  res.redirect("https://local-league-app.herokuapp.com/");
 };
