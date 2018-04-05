@@ -83,7 +83,7 @@ class LoginForm extends Component {
     }
     let action = null;
     if (this.state.type !== null) {
-      action = `http://localhost:8000/${this.state.type}`;
+      action = `https://local-league-app.herokuapp.com/${this.state.type}`;
     }
 
     let confirm = null;
