@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  min-height: 100vh;
+  background: url(/img/main.jpeg) fixed no-repeat center;
+  background-size: cover;
+  font-weight: 300;
+  font-family: "Oxygen", sans-serif;
+  /*font-family: 'Poiret One', cursive;*/
+  /*	font-family: 'Wire One', sans-serif;*/
+  /*font-family: 'Open Sans Condensed', sans-serif;*/
+}

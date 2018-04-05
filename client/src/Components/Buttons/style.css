@@ -1,0 +1,36 @@
+.nvBtn {
+  width: 100%;
+  background-color: #fc9900;
+  color: #fff;
+  text-align: left;
+  border-radius: 0px;
+  font-weight: 300;
+  padding: 20px 15px;
+  font-size: 1.5em;
+  margin-bottom: 1px;
+  text-transform: capitalize;
+}
+
+.navBtn:focus {
+  outline: none !important;
+}
+
+button:focus {
+  outline: none !important;
+}
+
+.lgout {
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  margin-bottom: 0px;
+}
+.panel-title.nvBtn {
+  background-color: transparent;
+  padding: 0;
+}
+
+@media only screen and (max-width: 40em) {
+  .nvBtn {
+    text-align: center;
+  }
+}
