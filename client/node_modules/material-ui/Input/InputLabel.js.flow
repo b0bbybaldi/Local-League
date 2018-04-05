@@ -31,9 +31,6 @@ export const styles = theme => ({
       easing: theme.transitions.easing.easeOut,
     }),
   },
-  disabled: {
-    color: theme.palette.text.disabled,
-  },
 });
 
 function InputLabel(props, context) {
@@ -42,8 +39,7 @@ function InputLabel(props, context) {
     classes,
     className: classNameProp,
     disableAnimation,
-    disabled,
-    FormControlClasses,
+    FormLabelClasses,
     margin: marginProp,
     shrink: shrinkProp,
     ...other
@@ -53,7 +49,7 @@ function InputLabel(props, context) {
   let shrink = shrinkProp;
 
   if (typeof shrink === 'undefined' && muiFormControl) {
-    shrink = muiFormControl.dirty || muiFormControl.focused || muiFormControl.adornedStart;
+    shrink = muiFormControl.filled || muiFormControl.focused || muiFormControl.adornedStart;
   }
 
   let margin = marginProp;
@@ -67,14 +63,13 @@ function InputLabel(props, context) {
       [classes.formControl]: muiFormControl,
       [classes.animated]: !disableAnimation,
       [classes.shrink]: shrink,
-      [classes.disabled]: disabled,
       [classes.marginDense]: margin === 'dense',
     },
     classNameProp,
   );
 
   return (
-    <FormLabel data-shrink={shrink} className={className} classes={FormControlClasses} {...other}>
+    <FormLabel data-shrink={shrink} className={className} classes={FormLabelClasses} {...other}>
       {children}
     </FormLabel>
   );
@@ -110,9 +105,9 @@ InputLabel.propTypes = {
    */
   focused: PropTypes.bool,
   /**
-   * `classes` property applied to the `FormControl` element.
+   * `classes` property applied to the `FormLabel` element.
    */
-  FormControlClasses: PropTypes.object,
+  FormLabelClasses: PropTypes.object,
   /**
    * If `dense`, will adjust vertical spacing. This is normally obtained via context from
    * FormControl.
@@ -129,7 +124,6 @@ InputLabel.propTypes = {
 };
 
 InputLabel.defaultProps = {
-  disabled: false,
   disableAnimation: false,
 };
 

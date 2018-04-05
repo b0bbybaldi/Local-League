@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import SwitchBase from '../internal/SwitchBase';
-import RadioButtonCheckedIcon from '../internal/svg-icons/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '../internal/svg-icons/RadioButtonUnchecked';
+import RadioButtonCheckedIcon from '../internal/svg-icons/RadioButtonChecked';
+import { capitalize } from '../utils/helpers';
 import withStyles from '../styles/withStyles';
 
 export const styles = theme => ({
@@ -25,8 +26,7 @@ export const styles = theme => ({
 function Radio(props) {
   const { classes, color, ...other } = props;
   const checkedClass = classNames(classes.checked, {
-    [classes.checkedPrimary]: color === 'primary',
-    [classes.checkedSecondary]: color === 'secondary',
+    [classes[`checked${capitalize(color)}`]]: color !== 'default',
   });
 
   return (
@@ -60,7 +60,7 @@ Radio.propTypes = {
   /**
    * The color of the component. It supports those theme colors that make sense for this component.
    */
-  color: PropTypes.oneOf(['primary', 'secondary']),
+  color: PropTypes.oneOf(['primary', 'secondary', 'default']),
   /**
    * If `true`, the switch will be disabled.
    */
@@ -88,7 +88,8 @@ Radio.propTypes = {
   /**
    * Callback fired when the state is changed.
    *
-   * @param {object} event The event source of the callback
+   * @param {object} event The event source of the callback.
+   * You can pull out the new value by accessing `event.target.value`.
    * @param {boolean} checked The `checked` value of the switch
    */
   onChange: PropTypes.func,

@@ -19,10 +19,12 @@ export const styles = theme => ({
     marginRight: theme.spacing.unit * 2, // used for row presentation of radio/checkbox
   },
   disabled: {
-    color: theme.palette.text.disabled,
     cursor: 'default',
   },
   label: {},
+  labelDisabled: {
+    color: theme.palette.text.disabled,
+  },
 });
 
 /**
@@ -77,7 +79,10 @@ function FormControlLabel(props, context) {
         value: control.props.value || value,
         inputRef: control.props.inputRef || inputRef,
       })}
-      <Typography component="span" className={classes.label}>
+      <Typography
+        component="span"
+        className={classNames(classes.label, { [classes.labelDisabled]: disabled })}
+      >
         {label}
       </Typography>
     </label>
@@ -120,7 +125,8 @@ FormControlLabel.propTypes = {
   /**
    * Callback fired when the state is changed.
    *
-   * @param {object} event The event source of the callback
+   * @param {object} event The event source of the callback.
+   * You can pull out the new value by accessing `event.target.checked`.
    * @param {boolean} checked The `checked` value of the switch
    */
   onChange: PropTypes.func,

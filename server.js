@@ -12,15 +12,10 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const session = require("express-session");
 
-// var configDB = require('./config/database.js');
+const MONGODB_URI = require("./config/keys");
+
 
 // configuration ===============================================================
-// mongoose.connect(configDB.url); // connect to our database
-
-// Connect to the Mongo DB
-mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://localhost/reactProject3"
-);
 
 require("./config/passport")(passport); // pass passport for configuration
 
@@ -70,6 +65,17 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
 require("./routes/routes.js")(app, passport, axios); // load our routes and pass in our app and fully configured passport
+
+// mongoDB connection =========================================================
+// Set up promises with mongoose
+mongoose.Promise = global.Promise;
+// Connect to the Mongo DB
+mongoose.connect(
+  MONGODB_URI || "mongodb://localhost/local-league",
+  {
+    useMongoClient: true
+  }
+);
 
 // launch ======================================================================
 // Start the API server

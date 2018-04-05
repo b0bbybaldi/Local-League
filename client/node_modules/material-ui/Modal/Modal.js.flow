@@ -4,15 +4,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import polyfill from 'react-lifecycles-compat';
 import warning from 'warning';
 import keycode from 'keycode';
 import activeElement from 'dom-helpers/activeElement';
 import contains from 'dom-helpers/query/contains';
 import inDOM from 'dom-helpers/util/inDOM';
 import ownerDocument from 'dom-helpers/ownerDocument';
-import RefHolder from '../internal/RefHolder';
+import RootRef from '../internal/RootRef';
 import Portal from '../Portal';
-import addEventListener from '../utils/addEventListener';
 import { createChainedFunction } from '../utils/helpers';
 import withStyles from '../styles/withStyles';
 import ModalManager from './ModalManager';
@@ -43,8 +43,24 @@ export const styles = theme => ({
 });
 
 class Modal extends React.Component {
+  static getDerivedStateFromProps(nextProps) {
+    if (nextProps.open) {
+      return {
+        exited: false,
+      };
+    } else if (!getHasTransition(nextProps)) {
+      // Otherwise let handleExited take care of marking exited.
+      return {
+        exited: true,
+      };
+    }
+
+    return null;
+  }
+
   constructor(props, context) {
     super(props, context);
+
     this.state = {
       exited: !this.props.open,
     };
@@ -54,15 +70,6 @@ class Modal extends React.Component {
     this.mounted = true;
     if (this.props.open) {
       this.handleOpen();
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.open) {
-      this.setState({ exited: false });
-    } else if (!getHasTransition(nextProps)) {
-      // Otherwise let handleExited take care of marking exited.
-      this.setState({ exited: true });
     }
   }
 
@@ -87,11 +94,7 @@ class Modal extends React.Component {
     }
   }
 
-  getDialogElement() {
-    return ReactDOM.findDOMNode(this.dialog);
-  }
-
-  dialog = null;
+  dialogElement = null;
   mounted = false;
   mountNode = null;
 
@@ -108,14 +111,15 @@ class Modal extends React.Component {
     const container = getContainer(this.props.container, doc.body);
 
     this.props.manager.add(this, container);
-    this.onDocumentKeydownListener = addEventListener(doc, 'keydown', this.handleDocumentKeyDown);
-    this.onFocusinListener = addEventListener(doc, 'focus', this.enforceFocus, true);
+    doc.addEventListener('keydown', this.handleDocumentKeyDown);
+    doc.addEventListener('focus', this.enforceFocus, true);
   };
 
   handleClose = () => {
     this.props.manager.remove(this);
-    this.onDocumentKeydownListener.remove();
-    this.onFocusinListener.remove();
+    const doc = ownerDocument(this.mountNode);
+    doc.removeEventListener('keydown', this.handleDocumentKeyDown);
+    doc.removeEventListener('focus', this.enforceFocus);
     this.restoreLastFocus();
   };
 
@@ -163,13 +167,12 @@ class Modal extends React.Component {
       return;
     }
 
-    const dialogElement = this.getDialogElement();
     const currentActiveElement = activeElement(ownerDocument(this.mountNode));
 
-    if (dialogElement && !contains(dialogElement, currentActiveElement)) {
+    if (this.dialogElement && !contains(this.dialogElement, currentActiveElement)) {
       this.lastFocus = currentActiveElement;
 
-      if (!dialogElement.hasAttribute('tabIndex')) {
+      if (!this.dialogElement.hasAttribute('tabIndex')) {
         warning(
           false,
           [
@@ -178,10 +181,10 @@ class Modal extends React.Component {
               'the tabIndex of the node is being set to "-1".',
           ].join('\n'),
         );
-        dialogElement.setAttribute('tabIndex', -1);
+        this.dialogElement.setAttribute('tabIndex', -1);
       }
 
-      dialogElement.focus();
+      this.dialogElement.focus();
     }
   }
 
@@ -201,11 +204,10 @@ class Modal extends React.Component {
       return;
     }
 
-    const dialogElement = this.getDialogElement();
     const currentActiveElement = activeElement(ownerDocument(this.mountNode));
 
-    if (dialogElement && !contains(dialogElement, currentActiveElement)) {
-      dialogElement.focus();
+    if (this.dialogElement && !contains(this.dialogElement, currentActiveElement)) {
+      this.dialogElement.focus();
     }
   };
 
@@ -275,13 +277,13 @@ class Modal extends React.Component {
           {hideBackdrop ? null : (
             <BackdropComponent open={open} onClick={this.handleBackdropClick} {...BackdropProps} />
           )}
-          <RefHolder
-            ref={node => {
-              this.dialog = node;
+          <RootRef
+            rootRef={node => {
+              this.dialogElement = node;
             }}
           >
             {React.cloneElement(children, childProps)}
-          </RefHolder>
+          </RootRef>
         </div>
       </Portal>
     );
@@ -399,4 +401,4 @@ Modal.defaultProps = {
   BackdropComponent: Backdrop,
 };
 
-export default withStyles(styles, { flip: false, name: 'MuiModal' })(Modal);
+export default withStyles(styles, { flip: false, name: 'MuiModal' })(polyfill(Modal));
