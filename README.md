@@ -1,6 +1,6 @@
 # Local-League
 
-Local-League allows you to post a soccer game and everyone who is registered in this application and lives in your area will get notification text message about the game. In addition, you can check to join other games that have been posted by some other people, check the weather, add your favorite team, check game history, and soccer news.
+Local-League allows you to post a soccer game and everyone who is registered in this application and lives in your area will get notification text message about the game. In addition, you can check to join other games that have been posted by some other people, check the weather, and add your favorite team.
 
 Link to live DEMO: (https://local-league-app.herokuapp.com/)
 
